@@ -60,7 +60,7 @@ class MembersResource extends Resource
                     ->email()
                     ->maxLength(255),
                     Forms\Components\Select::make('marital_status')
-                    ->label('Gender')
+                    ->label('Marital Status')
                     ->options([
                         'Single' => 'Single',
                         'Married' => 'Married',
@@ -240,7 +240,18 @@ class MembersResource extends Resource
             'create' => Pages\CreateMembers::route('/create'),
             'edit' => Pages\EditMembers::route('/{record}/edit'),
             'view' => Pages\ViewMember::route('/{record}'),
-
         ];
+    }
+
+    public static function getEloquentQuery(): Builder 
+    {
+        $query = parent::getEloquentQuery();
+
+        if (Auth::check() && Auth::user()->hasRole('super_admin')) {
+            // The user has the admin role
+        } else {
+            $query->where('tribe_id', auth()->user()->tribe_id);
+        }
+        return $query;
     }
 }
