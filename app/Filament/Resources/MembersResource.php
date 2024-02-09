@@ -12,6 +12,7 @@ use App\Models\MemberStatus;
 use App\Models\Tribe;
 use App\Models\Team;
 
+use Illuminate\Support\Facades\Auth;
 
 use Filament\Forms\Get;
 use Filament\Forms;
