@@ -142,7 +142,8 @@ class MdjResource extends Resource
         if (Auth::check() && Auth::user()->hasRole('super_admin')) {
             // The user has the admin role
         } else {
-            $query->where('members.tribe_id', auth()->user()->tribe_id);
+            $query->join('members', 'mdj.members_id', '=', 'members.id')
+            ->where('members.tribe_id', auth()->user()->tribe_id);
         }
         return $query;
     }
