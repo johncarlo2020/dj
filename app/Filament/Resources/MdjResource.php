@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class MdjResource extends Resource
 {
@@ -132,5 +133,17 @@ class MdjResource extends Resource
             'create' => Pages\CreateMdj::route('/create'),
             'edit' => Pages\EditMdj::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder 
+    {
+        $query = parent::getEloquentQuery();
+
+        if (Auth::check() && Auth::user()->hasRole('super_admin')) {
+            // The user has the admin role
+        } else {
+            $query->where('members.tribe_id', auth()->user()->tribe_id);
+        }
+        return $query;
     }
 }
